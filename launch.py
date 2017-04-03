@@ -63,7 +63,7 @@ while(len(queue) > 0):
     bitrate = f.info.bitrate / 1000
     # Apply the correct settings
     if(bitrate == 32):
-        mixer.pre_init(frequency=28000)
+        mixer.pre_init(frequency=27000)
         mixer.init()
     else:
         mixer.pre_init(frequency=22050)
