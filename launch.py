@@ -6,12 +6,12 @@ import os
 import pygame
 import time
 import random
+from mutagen.mp3 import MP3
 
 # This function adds 5 news items to the queue with a breif introduction.
 def newsSeg():
     i = 1
     a = []
-    a.append(saveSpeak("Here is some news"))
     while(i<6):
         a.append(saveSpeak(newsList[0]))
         newsList.remove(newsList[0])
@@ -23,7 +23,7 @@ def newsSeg():
 #Create radio variables
 queue = []
 newsList = []
-mixer.init()
+#mixer.init()
 newsToggle = True
 
 #Add the opening to the queue
@@ -32,7 +32,8 @@ queue += opening()
 newsList = newsList + collectRss()
 
 #Start with either the news or a song
-choice = random.randint(0,1)
+#choice = random.randint(0,1)
+choice = 1
 if(choice == 0):
     queue.append(saveSpeak("Let's start with the news."))
     queue += newsSeg()
@@ -53,7 +54,21 @@ while(len(queue) > 0):
     if(queue[0] == "queue/3.mp3"):
         cleanUp(11,10)
     ############################################################################
-    # Load and play the first item in the queue
+    # Load and play the first item in the queue, The bitrate of the track is checked
+    # to see if this is a speaking clip. If so the mixer frequency is changed
+    # so that it is read faster to make the voice sound more natural.
+
+    # Get the bitrate
+    f = MP3(queue[0])
+    bitrate = f.info.bitrate / 1000
+    # Apply the correct settings
+    if(bitrate == 32):
+        mixer.pre_init(frequency=28000)
+        mixer.init()
+    else:
+        mixer.pre_init(frequency=22050)
+        mixer.init()
+    # Load and play the audio
     mixer.music.load(queue[0])
     mixer.music.play()
 
@@ -85,7 +100,9 @@ while(len(queue) > 0):
         else:
             queue += playSong()
     #If the news list is empty, refil it
-    newsList = newsList + collectRss()
+    if(len(newsList) == 0):
+        newsList = newsList + collectRss()
+    mixer.quit()
 
 #There is currently no way to end the program so this stuff is kind of redundant.
 #Show is over, play the outro

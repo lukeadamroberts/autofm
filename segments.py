@@ -9,7 +9,7 @@ from sound import *
 #Returns the opening lines
 def opening():
     a = []
-    a.append(saveSpeak("Welcome to ram FM"))
+    a.append(saveSpeak("Welcome to auto FM"))
     a.append(saveSpeak("robot"))
     a.append(saveSpeak("radio"))
     return a
