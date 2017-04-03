@@ -18,10 +18,15 @@ def introArtist(song):
     return a
 
 # Picks a song from the music folder. The name of the song is returned so that it
-# can be added to the queue.
+# can be added to the queue. This function has to check for the '.mp3' so that it
+# doesn't accidently get the .gitignore.
 def pickSong():
     a = os.listdir("Music")
-    b = random.choice(a)
+    found = False
+    while(found == False):
+        b = random.choice(a)
+        if(b.find('.mp3') != -1):
+            found = True
     return b
 
 # This function picks a song, makes an introduction for it. These things are returned
