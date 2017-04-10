@@ -7,6 +7,7 @@ import pygame
 import time
 import random
 from mutagen.mp3 import MP3
+import vlc
 
 # This function adds 5 news items to the queue with a breif introduction.
 def newsSeg():
@@ -41,7 +42,7 @@ if(choice == 0):
 else:
     queue.append(saveSpeak("Let's start with a tune."))
     queue += playSong()
-    queue.append(saveSpeak("Now it's time for today's news."))
+    queue.append(saveSpeak("Here's the news."))
     queue += newsSeg()
 
 #Start the radio
@@ -57,26 +58,36 @@ while(len(queue) > 0):
     # to see if this is a speaking clip. If so the mixer frequency is changed
     # so that it is read faster to make the voice sound more natural.
 
-    # Get the bitrate
-    f = MP3(queue[0])
-    bitrate = f.info.bitrate / 1000
-    # Apply the correct settings
-    if(bitrate == 32):
-        mixer.pre_init(frequency=27000)
-        mixer.init()
-    else:
-        mixer.pre_init(frequency=22050)
-        mixer.init()
+
+    # This is if I want to speed up the voice tracks like in the pygame version
+    # # Get the bitrate
+    # f = MP3(queue[0])
+    # bitrate = f.info.bitrate / 1000
+    # # Apply the correct settings
+    # if(bitrate == 32):
+    #     mixer.pre_init(frequency=27000)
+    #     mixer.init()
+    # else:
+    #     mixer.pre_init(frequency=22050)
+    #     mixer.init()
     # Load and play the audio
-    mixer.music.load(queue[0])
-    mixer.music.play()
+    a = queue[0]
+    currentTrack = vlc.MediaPlayer(a)
+    currentTrack.play()
+
+    # VLC takes a couple of seconds to start up, so keep it waiting until it starts
+    # otherwise tracks will start to pile ontop of each other.
+    started = False
+    while(started == False):
+        if(currentTrack.is_playing() == 1):
+            started = True
 
     # The program remains in this next loop while the queue item above is playing
     # this is required otherwise the mp3s will constanly replace each other.
     playing = True
     while(playing == True):
         # Leave this loop once the queue item is finished playing.
-        if(mixer.music.get_busy() == 0):
+        if(currentTrack.is_playing() == 0):
             playing = False
     # Remove the item from the queue.
     queue.remove(queue[0])
@@ -101,7 +112,6 @@ while(len(queue) > 0):
     #If the news list is empty, refil it
     if(len(newsList) == 0):
         newsList = newsList + collectRss()
-    mixer.quit()
 
 #There is currently no way to end the program so this stuff is kind of redundant.
 #Show is over, play the outro

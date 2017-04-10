@@ -9,9 +9,10 @@ from sound import *
 #Returns the opening lines
 def opening():
     a = []
-    a.append(saveSpeak("Welcome to auto FM"))
-    a.append(saveSpeak("robot"))
-    a.append(saveSpeak("radio"))
+    #a.append(saveSpeak("Welcome to auto FM"))
+    #a.append(saveSpeak("robot. radio"))
+    #a.append(saveSpeak("radio"))
+    a.append("jingles/intro.mp3")
     return a
 
 #Removes the 10 mp3s from a given number
