@@ -15,6 +15,10 @@ rssList = ['http://feeds.bbci.co.uk/news/technology/rss.xml',
         'https://www.gamespot.com/feeds/news/',
         'http://feeds.bbci.co.uk/news/science_and_environment/rss.xml']
 
+jokeList = ['http://www.jokespalace.com/feed/']
+
+factList = ['http://feeds.feedburner.com/RandomFactsBlog']
+
 #Downloads the rss values
 def collectRss():
     news = []

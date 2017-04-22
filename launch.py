@@ -31,8 +31,8 @@ queue += opening()
 newsList = newsList + collectRss()
 
 #Start with either the news or a song
-choice = random.randint(0,1)
-#choice = 1
+#choice = random.randint(0,1)
+choice = 0
 if(choice == 0):
     queue.append(saveSpeak("Let's start with the news."))
     queue += newsSeg()
