@@ -20,8 +20,8 @@ def speak(x,num):
 def saveSpeak(x):
         tts = gTTS(text=x, lang='en')
         number = genName()
-        tts.save("queue/"+number+".mp3")
-        return "queue/"+number+".mp3"
+        tts.save("/run/shm/queue/"+number+".mp3")
+        return "/run/shm/queue/"+number+".mp3"
 
 #Plays a given mp3
 def play(x):
@@ -34,7 +34,7 @@ def pause():
 
 #Gets a uniqe id for an mp3 and returns the value
 def genName():
-    a = os.listdir("queue")
+    a = os.listdir("/run/shm/queue")
     num = 1
     done = False
     while(done == False):

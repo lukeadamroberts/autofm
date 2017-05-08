@@ -21,7 +21,7 @@ def cleanUp(i,x):
     no = True
     while( i < j):
         try:
-            os.remove("queue/"+str(i)+".mp3")
+            os.remove("/run/shm/queue/"+str(i)+".mp3")
         except:
             no = True
         i += 1

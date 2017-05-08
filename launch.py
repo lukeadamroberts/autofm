@@ -8,6 +8,10 @@ import time
 import random
 from mutagen.mp3 import MP3
 
+shm = os.path.abspath("/run/shm/")
+if(os.path.isfile(shm+"/queue") == False):
+    os.mkdir(shm+"/queue")
+
 # This function adds 5 news items to the queue with a breif introduction.
 def newsSeg():
     i = 1
@@ -32,7 +36,7 @@ newsList = newsList + collectRss()
 
 #Start with either the news or a song
 #choice = random.randint(0,1)
-choice = 0
+choice = 1
 if(choice == 0):
     queue.append(saveSpeak("Let's start with the news."))
     queue += newsSeg()
@@ -48,9 +52,9 @@ else:
 while(len(queue) > 0):
     # Check what number mp3 is being played, this is then used to delete certain
     # mp3s to control the maximum number of mp3s in the queue file.
-    if(queue[0] == "queue/13.mp3"):
+    if(queue[0] == "/run/shm/queue/13.mp3"):
         cleanUp(1,10)
-    if(queue[0] == "queue/3.mp3"):
+    if(queue[0] == "/run/shm/queue/3.mp3"):
         cleanUp(11,10)
     ############################################################################
     # Load and play the first item in the queue, The bitrate of the track is checked
